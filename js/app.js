@@ -114,10 +114,13 @@ void function () {
 
   function getCommuteTime(postcode) {
     location.commute.time = 'Searching...';
+    location.commute.station = 'Searching...';
 
     var API_GUID_PROPERTY_SEARCH = '6093274c-6b22-4dc4-89bc-c3af3b1eaf62';
     var API_GUID_TRAIN_TIME_FINDER = '8e7df55d-a278-4e96-a83e-1e87f245ba82';
     var API_GUID_RAIL_STATION_FINDER = 'aa832bae-d298-4943-844d-10cb71bc2a64';
+    var traintime = '800'; // 8am
+    var traindate = '13-nov-2015' // day of the datathlon!
         
     var propSearchApi = 'https://api.import.io/store/data/' + API_GUID_PROPERTY_SEARCH + '/_query?input/webpage/url=http://www.zoopla.co.uk/for-sale/property/' + postcode + '&_apikey=' + API_KEY;
     
@@ -132,7 +135,7 @@ console.log(data);
       var station = data.results[0].station;
       location.commute.station = station;
       render();
-      var trainTimeFinder = 'https://api.import.io/store/data/' + API_GUID_TRAIN_TIME_FINDER + '/_query?input/webpage/url=https://www.thetrainline.com/train-times/' + station.replace(' ', '-') + '-to-london-liverpool-street/13-nov-2015/1000&_apikey=' + API_KEY;
+      var trainTimeFinder = 'https://api.import.io/store/data/' + API_GUID_TRAIN_TIME_FINDER + '/_query?input/webpage/url=https://www.thetrainline.com/train-times/' + station.replace(' ', '-') + '-to-london-liverpool-street/' + traindate + '/' + traintime + '&_apikey=' + API_KEY;
       return getJSON(trainTimeFinder);
 
     }).then(function(data) {
