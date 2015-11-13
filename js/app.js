@@ -1,9 +1,11 @@
 
 void function () {
+	var API_KEY = '5eec3a52201d4802af6fa487025b0669c3da9015c7cd9b971ef9f3cb8e6645c042a3ba852f4ef0e58bf30db5e6cc04fa9e27bb140a9955977279ae0cf92a9d7e34a9e75ce84a3cd19f184be381035f50';
   var ui;
   var templates;
   var location = {
-    commute: {}
+    commute: {},
+		housing: {}
   };
 
   function init () {
@@ -94,8 +96,9 @@ void function () {
     getPostcode(e.latlng.lat, e.latlng.lng).then(function (postcode) {
       location.name = postcode;
 
-      getCommuteTime();
+      getCommuteTime(postcode);
       getCommuteCost();
+			getHousingCosts(postcode);
 
       render();
     });
@@ -105,21 +108,20 @@ void function () {
 
 
 
-  function getCommuteTime(homePostcode) {
+  function getCommuteTime(postcode) {
     location.commute.time = 'Searching...';
 
     var API_GUID_PROPERTY_SEARCH = '6093274c-6b22-4dc4-89bc-c3af3b1eaf62';
     var API_GUID_TRAIN_TIME_FINDER = '8e7df55d-a278-4e96-a83e-1e87f245ba82';
     var API_GUID_RAIL_STATION_FINDER = 'aa832bae-d298-4943-844d-10cb71bc2a64';
-    var API_KEY = '5eec3a52201d4802af6fa487025b0669c3da9015c7cd9b971ef9f3cb8e6645c042a3ba852f4ef0e58bf30db5e6cc04fa9e27bb140a9955977279ae0cf92a9d7e34a9e75ce84a3cd19f184be381035f50';
-        
-    var propSearchApi = 'https://api.import.io/store/data/' + API_GUID_PROPERTY_SEARCH + '/_query?input/webpage/url=http://www.zoopla.co.uk/for-sale/property/' + homePostcode + '&_apikey=' + API_KEY;
-    
+
+    var propSearchApi = 'https://api.import.io/store/data/' + API_GUID_PROPERTY_SEARCH + '/_query?input/webpage/url=http://www.zoopla.co.uk/for-sale/property/' + postcode + '&_apikey=' + API_KEY;
+
     getJSON(propSearchApi).then(function(data) {
 console.log(data);
 
       var propertyUrl = data.results[0].property_link;
-      var railStationFinder = 'https://api.import.io/store/data/' + API_GUID_RAIL_STATION_FINDER + '/_query?input/webpage/url=' + propertyUrl + '&_apikey=' + API_KEY;      
+      var railStationFinder = 'https://api.import.io/store/data/' + API_GUID_RAIL_STATION_FINDER + '/_query?input/webpage/url=' + propertyUrl + '&_apikey=' + API_KEY;
       return getJSON(railStationFinder);
 
     }).then(function(data) {
@@ -138,7 +140,41 @@ console.log(data);
       location.commute.time = 'Unknown';
       render();
     });
-  }  
+  }
+
+	function getHousingCosts(postcode){
+    var API_GUID_RENT_PRICES = '65872983-e460-4542-8345-1e8c3b61a28b';
+    var API_GUID_SALE_PRICES = 'e4b633fc-93a3-45ba-b622-eb03e93dc219';
+
+		var propSearchApi = 'https://api.import.io/store/data/' + API_GUID_RENT_PRICES + '/_query?input/webpage/url=http://www.zoopla.co.uk/market/uk' + postcode + '&_apikey=' + API_KEY;
+
+    getJSON(propSearchApi).then(function(data) {
+			console.log(data);
+			if (data.results && data.results[0]) {
+				location.housing.record = [];
+				for (i = 0; i < data.results.length; i++) {
+					location.housing.record.push({
+						two_beds: data.results[i].two_beds,
+						dwelling_type: data.results[i]["dwelling_type/_text"],
+						one_bed: data.results[i].one_beds,
+						three_beds: data.results[i].three_beds,
+						four_beds: data.results[i].four_beds,
+						five_beds: data.results[i].five_beds
+					});
+				}
+			render();
+			}
+    }).catch(function (e) {
+      console.error(e);
+      	location.housing.record.two_beds = '',
+				location.housing.record.one_bed = '',
+				location.housing.record.three_beds = '',
+				location.housing.record.four_beds = '',
+				location.housing.record.five_beds = ''
+      render();
+    });
+
+	}
 
 
   function getCommuteCost(postcode) {
