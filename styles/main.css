@@ -211,7 +211,6 @@ td {
 }
 
 .schools-col {
-  height: 120px;
   padding: 0px;
 }
 
@@ -220,3 +219,7 @@ td {
 .schools-col dd {
   font-size: 14px;
   }
+
+#commute {
+  margin-top: -20px !important;
+}
