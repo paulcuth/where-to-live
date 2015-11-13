@@ -17,7 +17,8 @@ void function () {
   	location = {
     	commute: {},
     	pubs: {},
-			housing: {}
+			housing: {},
+      schools: {}
   	};
   }
 
@@ -106,6 +107,8 @@ void function () {
       getCommuteInfo(postcode);
       getPubInfo(postcode);
 			getHousingCosts(postcode);
+      getSchools(postcode);
+
       render();
     });
   }
@@ -184,6 +187,7 @@ void function () {
     });
   }
 
+
 	function getHousingCosts(postcode){
 		var API_GUID_RENT_PRICES = '65872983-e460-4542-8345-1e8c3b61a28b';
 		var API_GUID_SALE_PRICES = 'e4b633fc-93a3-45ba-b622-eb03e93dc219';
@@ -217,6 +221,59 @@ void function () {
 		});
 
 	}
+
+
+  function getSchools (postcode) {
+    location.schools.list = [{name: 'Searching...'}];
+    var listUrl = 'https://api.import.io/store/data/0b4e33cb-b4b7-4de5-8331-09d9b82862e9/_query?input/webpage/url=http%3A%2F%2Freports.ofsted.gov.uk%2Finspection-reports%2Ffind-inspection-report%2Fresults%2F1%2F23%2Fany%2Fany%2Fany%2Fany%2Fany%2F' + postcode + '%2F5%2Fany%2F0%2F0&_user=5eec3a52-201d-4802-af6f-a487025b0669&_apikey=5eec3a52201d4802af6fa487025b0669c3da9015c7cd9b971ef9f3cb8e6645c042a3ba852f4ef0e58bf30db5e6cc04fa9e27bb140a9955977279ae0cf92a9d7e34a9e75ce84a3cd19f184be381035f50';
+
+    getJSON(listUrl).then(function (data) {
+      if (data.results) {
+        return data.results.map(function (result) {
+          return {
+            name: result['link/_text'],
+            url: result.link
+          };
+        });
+      }
+    }).then(function (links) {
+      if (!links) {
+        location.schools.list = [{name: 'No schools found.'}];
+        render();
+      } else {
+        var promises = [];
+
+        location.schools.list = links.map(function (link) {
+          var school = {
+            name: link.name,
+            rating: 'Searching...'
+          };
+
+          getJSON('https://api.import.io/store/data/6506f33c-f60f-4ecd-8657-0aaa876eb877/_query?input/webpage/url=' + link.url + '&_user=5eec3a52-201d-4802-af6f-a487025b0669&_apikey=5eec3a52201d4802af6fa487025b0669c3da9015c7cd9b971ef9f3cb8e6645c042a3ba852f4ef0e58bf30db5e6cc04fa9e27bb140a9955977279ae0cf92a9d7e34a9e75ce84a3cd19f184be381035f50').then(function (res) {
+            if (res && res.results && res.results[0]) {
+              var link = res.results[0];
+              school.rating = link.rating || 'No rating';
+            } else {
+              school.rating = 'No rating';
+            }
+            render();
+          }).then(function (e) {
+            school.rating = e;
+            renderSection('schools');
+          });
+
+          return school;
+        });
+
+        render();
+        return Promise.all(promises);
+      }
+    }).catch(function (e) {
+      console.error(e);
+    });
+
+  }
+
 
   window.addEventListener('load', init);
 }();
