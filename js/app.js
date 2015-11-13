@@ -1,5 +1,6 @@
 
 void function () {
+	var API_KEY = '5eec3a52201d4802af6fa487025b0669c3da9015c7cd9b971ef9f3cb8e6645c042a3ba852f4ef0e58bf30db5e6cc04fa9e27bb140a9955977279ae0cf92a9d7e34a9e75ce84a3cd19f184be381035f50';
   var ui;
   var templates;
   var location = {
@@ -94,7 +95,7 @@ void function () {
     getPostcode(e.latlng.lat, e.latlng.lng).then(function (postcode) {
       location.name = postcode;
 
-      getCommuteTime();
+      getCommuteTime(postcode);
       getCommuteCost();
 
       render();
@@ -105,15 +106,14 @@ void function () {
 
 
 
-  function getCommuteTime(homePostcode) {
+  function getCommuteTime(postcode) {
     location.commute.time = 'Searching...';
 
     var API_GUID_PROPERTY_SEARCH = '6093274c-6b22-4dc4-89bc-c3af3b1eaf62';
     var API_GUID_TRAIN_TIME_FINDER = '8e7df55d-a278-4e96-a83e-1e87f245ba82';
     var API_GUID_RAIL_STATION_FINDER = 'aa832bae-d298-4943-844d-10cb71bc2a64';
-    var API_KEY = '5eec3a52201d4802af6fa487025b0669c3da9015c7cd9b971ef9f3cb8e6645c042a3ba852f4ef0e58bf30db5e6cc04fa9e27bb140a9955977279ae0cf92a9d7e34a9e75ce84a3cd19f184be381035f50';
         
-    var propSearchApi = 'https://api.import.io/store/data/' + API_GUID_PROPERTY_SEARCH + '/_query?input/webpage/url=http://www.zoopla.co.uk/for-sale/property/' + homePostcode + '&_apikey=' + API_KEY;
+    var propSearchApi = 'https://api.import.io/store/data/' + API_GUID_PROPERTY_SEARCH + '/_query?input/webpage/url=http://www.zoopla.co.uk/for-sale/property/' + postcode + '&_apikey=' + API_KEY;
     
     getJSON(propSearchApi).then(function(data) {
 console.log(data);
