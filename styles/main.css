@@ -209,3 +209,14 @@ td {
 .icon-pub {
   margin-bottom: 10px;
 }
+
+.schools-col {
+  height: 120px;
+  padding: 0px;
+}
+
+.schools-col dt {
+}
+.schools-col dd {
+  font-size: 14px;
+  }

@@ -84,10 +84,14 @@
 
     <script id="schools-template" type="text/x-handlebars-template">
            <h4 class="criteria-label "><span><img src="img/icon-school.svg" class="icon icon-main"></span> Schools</h4>
+
       <dl>
         {{#each list}}
+        <div class="col-xs-2 text-center schools-col">
+        <img class="icon" src="img/icon-pencil.svg">
           <dt>{{name}}</dt>
           <dd>{{rating}}</dd>
+        </div>
         {{/each}}
       </dl>
     </script>
