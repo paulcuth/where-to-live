@@ -1,0 +1,47 @@
+<html> 
+  <head>
+    <link rel="stylesheet" href="https://import.io/style-guide/latest/main.css" />
+    <link rel="stylesheet" href="./styles/main.css" />
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />    
+    <title>Where to Live</title>
+
+    <script id="commute-template" type="text/x-handlebars-template">
+        <h2>Commute</h2>
+        <p>Commute goes here</p>
+    </script>
+
+    <script id="housing-template" type="text/x-handlebars-template">
+        <h2>Housing</h2>
+        <p>Housing goes here</p>
+    </script>
+
+    <script id="schools-template" type="text/x-handlebars-template">
+        <h2>Schools</h2>
+        <p>Schools go here</p>
+    </script>
+
+    <script id="pubs-template" type="text/x-handlebars-template">
+        <h2>Pubs</h2>
+        <p>Pubs go here</p>
+    </script>
+
+
+  </head>
+
+  <body>
+    <section id="map">
+    </section>
+
+    <section id="content" class="form io-gradient-navy-pink well">
+      <h1 id="location-name">Where to live?</h1>
+      <section id="commute"></section>
+      <section id="housing"></section>
+      <section id="schools"></section>
+      <section id="pubs"></section>
+    </section>
+
+    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.4/handlebars.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>
