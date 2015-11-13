@@ -4,6 +4,8 @@ void function () {
   var ui;
   var templates;
   var location;
+  var map;
+  var marker;
 
   function init () {
   	initLocation();
@@ -46,7 +48,7 @@ void function () {
 
 
   function initMap () {
-    var map = L.map('map').setView([51.505, -0.09], 9);
+    map = L.map('map').setView([51.505, -0.09], 9);
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
         maxZoom: 18,
@@ -101,9 +103,15 @@ void function () {
   function handleMapClick (e) {
   	initLocation();
   	render();
+
+    if (marker) {
+      marker.setOpacity(0);
+    }
+    marker = L.marker(e.latlng).addTo(map);
     getPostcode(e.latlng.lat, e.latlng.lng).then(function (postcode) {
+      // marker.bindPopup(postcode).openPopup();
       location.name = postcode;
-			console.log(postcode)
+
       getCommuteInfo(postcode);
       getPubInfo(postcode);
 			getHousingCosts(postcode);
