@@ -4,6 +4,10 @@ void function () {
   var ui;
   var templates;
   var location;
+  var location = {
+    commute: {},
+		housing: {}
+  };
 
   function init () {
   	initLocation();
@@ -12,7 +16,7 @@ void function () {
     initMap();
     render();
   }
-  
+
   function initLocation () {
   	location = {
     	commute: {}
@@ -102,7 +106,7 @@ void function () {
       location.name = postcode;
 
       getCommuteInfo(postcode);
-
+			getHousingCosts(postcode);
       render();
     });
   }
@@ -122,12 +126,13 @@ void function () {
     var API_GUID_TICKET_PRICES_FINDER = '5bb3976c-7b53-4f38-a0c7-b76f7a88d47c';
     var traintime = '800'; // 8am
     var traindate = '13-nov-2015' // day of the datathlon!
-        
+
+
     var propSearchApi = 'https://api.import.io/store/data/' + API_GUID_PROPERTY_SEARCH + '/_query?input/webpage/url=http://www.zoopla.co.uk/for-sale/property/' + postcode + '&_apikey=' + API_KEY;
-    
+
     getJSON(propSearchApi).then(function(data) {
       var propertyUrl = data.results[0].property_link;
-      var railStationFinder = 'https://api.import.io/store/data/' + API_GUID_RAIL_STATION_FINDER + '/_query?input/webpage/url=' + propertyUrl + '&_apikey=' + API_KEY;      
+      var railStationFinder = 'https://api.import.io/store/data/' + API_GUID_RAIL_STATION_FINDER + '/_query?input/webpage/url=' + propertyUrl + '&_apikey=' + API_KEY;
       return getJSON(railStationFinder);
 
     }).then(function(data) {
@@ -145,7 +150,7 @@ void function () {
     }).then(function(data) {
       var ticketPricesFinder = 'https://api.import.io/store/data/' + API_GUID_TICKET_PRICES_FINDER + '/_query?input/webpage/url=http://tickets.northernrail.org/s/season-tickets/' + location.commute.station.replace(' ', '%20') + '/London%20Liverpool%20Street/adult/2015-11-14/0100,1200&_apikey=' + API_KEY;
 			return getJSON(ticketPricesFinder);
-			
+
     }).then(function(data) {
       location.commute.cost = getAnnualCost(data.results);
       render();
@@ -155,15 +160,48 @@ void function () {
       location.commute.time = 'Unknown';
       render();
     });
-  }  
-  
-  
+  }
+
+
   function getAnnualCost(prices) {
   	for(var i = 0; i < prices.length; i++) {
   		if(prices[i].length == '12 months') return prices[i]['cost/_source'];
   	}
   }
 
+	function getHousingCosts(postcode){
+    var API_GUID_RENT_PRICES = '65872983-e460-4542-8345-1e8c3b61a28b';
+    var API_GUID_SALE_PRICES = 'e4b633fc-93a3-45ba-b622-eb03e93dc219';
+
+		var propSearchApi = 'https://api.import.io/store/data/' + API_GUID_RENT_PRICES + '/_query?input/webpage/url=http://www.zoopla.co.uk/market/uk' + postcode + '&_apikey=' + API_KEY;
+
+    getJSON(propSearchApi).then(function(data) {
+			console.log(data);
+			if (data.results && data.results[0]) {
+				location.housing.record = [];
+				for (i = 0; i < data.results.length; i++) {
+					location.housing.record.push({
+						two_beds: data.results[i].two_beds,
+						dwelling_type: data.results[i]["dwelling_type/_text"],
+						one_bed: data.results[i].one_beds,
+						three_beds: data.results[i].three_beds,
+						four_beds: data.results[i].four_beds,
+						five_beds: data.results[i].five_beds
+					});
+				}
+			render();
+			}
+    }).catch(function (e) {
+      console.error(e);
+      	//location.housing.record.two_beds = '',
+				//location.housing.record.one_bed = '',
+				//location.housing.record.three_beds = '',
+				//location.housing.record.four_beds = '',
+				//location.housing.record.five_beds = ''
+      render();
+    });
+
+	}
 
 
 
