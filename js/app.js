@@ -101,7 +101,7 @@ void function () {
   	render();
     getPostcode(e.latlng.lat, e.latlng.lng).then(function (postcode) {
       location.name = postcode;
-
+			console.log(postcode)
       getCommuteInfo(postcode);
 			getHousingCosts(postcode);
       render();
@@ -168,7 +168,7 @@ void function () {
 	var API_GUID_RENT_PRICES = '65872983-e460-4542-8345-1e8c3b61a28b';
 	var API_GUID_SALE_PRICES = 'e4b633fc-93a3-45ba-b622-eb03e93dc219';
 
-	var propSearchApi = 'https://api.import.io/store/data/' + API_GUID_RENT_PRICES + '/_query?input/webpage/url=http://www.zoopla.co.uk/market/uk' + postcode + '&_apikey=' + API_KEY;
+	var propSearchApi = 'https://api.import.io/store/data/' + API_GUID_SALE_PRICES + '/_query?input/webpage/url=http://www.zoopla.co.uk/market/uk/' + postcode + '&_apikey=' + API_KEY;
 
 	getJSON(propSearchApi).then(function(data) {
 		console.log(data);
@@ -197,9 +197,6 @@ void function () {
 	});
 
 }
-
-
-
 
   window.addEventListener('load', init);
 }();
