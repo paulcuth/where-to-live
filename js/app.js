@@ -245,6 +245,10 @@ void function () {
         });
       }
     }).then(function (links) {
+      if (links.length > 6) {
+        links.length = 6;
+      }
+
       if (!links) {
         location.schools.list = [{name: 'No schools found.'}];
         render();
