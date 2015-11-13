@@ -107,6 +107,7 @@ void function () {
 
       getCommuteInfo(postcode);
       getCommuteCost();
+			getHousingCosts(postcode);
       render();
     });
   }
