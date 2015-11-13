@@ -71,7 +71,7 @@ body.location #location {
 }
 
 .icon-main {
-  margin-right: 30px;
+  margin-right: 5px;
 }
 
 body {
@@ -93,6 +93,10 @@ body {
 
 .criteria-label {
   font-size: 16px;
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  opacity: 0.5;
 
 }
 
@@ -148,10 +152,16 @@ body {
   background: none;
 }
 
-dt {
-  color: #ffe40d;
+.panel-body {
+  margin-bottom: 40px;
+
 }
 
 dd {
   font-size: 22px;
+    color: #ffe40d;
+}
+
+#commute-template {
+  margin-bottom: 30px;
 }
