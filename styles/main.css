@@ -70,6 +70,13 @@ body.location #location {
   opacity: 0.5;
 }
 
+.icon-large {
+  height: 36px;
+  color: #fff;
+  margin-right: 10px;
+  margin-top: -5px;
+}
+
 .icon-main {
   margin-right: 5px;
 }
