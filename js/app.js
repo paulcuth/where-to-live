@@ -105,15 +105,8 @@ void function () {
     getPostcode(e.latlng.lat, e.latlng.lng).then(function (postcode) {
       location.name = postcode;
 
-<<<<<<< HEAD
       getCommuteInfo(postcode);
-			getHousingCosts(postcode);
-=======
-      getCommuteTime(postcode);
       getCommuteCost();
-			getHousingCosts(postcode);
-
->>>>>>> dde8f51a3073691cff170ec97352644e6de9569d
       render();
     });
   }
