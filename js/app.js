@@ -113,8 +113,8 @@ void function () {
 
 
   function getCommuteTime(postcode) {
-    location.commute.time = 'Searching...';
-    location.commute.station = 'Searching...';
+    location.commute.time = '<span class="loading">Searching...</span>';
+    location.commute.station = '<span class="loading">Searching...</span>';
 
     var API_GUID_PROPERTY_SEARCH = '6093274c-6b22-4dc4-89bc-c3af3b1eaf62';
     var API_GUID_TRAIN_TIME_FINDER = '8e7df55d-a278-4e96-a83e-1e87f245ba82';
@@ -153,7 +153,7 @@ console.log(data);
 
 
   function getCommuteCost(postcode) {
-    location.commute.cost = 'N/A';
+    location.commute.cost = '<span class="loading">N/A</span>';
   }
 
 

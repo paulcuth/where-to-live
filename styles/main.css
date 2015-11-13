@@ -171,3 +171,7 @@ dd {
 #commute-template {
   margin-bottom: 30px;
 }
+
+.loading {
+  color: #767676;
+}

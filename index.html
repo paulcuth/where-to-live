@@ -6,7 +6,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="js/bootstrap.js"></script>
 
-    <title>Where to Live</title>
+    <title><span><img src="img/icon-location.svg" class="icon"></span> Where to Live</title>
 
     <script id="commute-template" type="text/x-handlebars-template">
     <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
@@ -16,20 +16,20 @@
         <div class="col-xs-4 text-center">
         <img class="icon" src="img/icon-walk.svg">
         <dt>Nearest train station:</dt>
-        <dd>{{station}}</dd>
+        <dd>{{{station}}}</dd>
         </div>
           
           <div class="col-xs-4 text-center">
           <img class="icon" src="img/icon-time.svg">
           <dt>Time to work:</dt>
-          <dd>{{time}}</dd>
+          <dd>{{{time}}}</dd>
         </div>
 
 
           <div class="col-xs-4 text-center">
           <img class="icon" src="img/icon-ticket.svg">
           <dt>Annual cost:</dt>
-          <dd>{{cost}}</dd>
+          <dd>{{{cost}}}</dd>
         </div>
         </div>
         </div>
