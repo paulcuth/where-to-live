@@ -257,7 +257,7 @@ void function () {
               school.rating = 'No rating';
             }
             render();
-          }).then(function (e) {
+          }).catch(function (e) {
             school.rating = e;
             renderSection('schools');
           });
@@ -266,7 +266,6 @@ void function () {
         });
 
         render();
-        return Promise.all(promises);
       }
     }).catch(function (e) {
       console.error(e);
