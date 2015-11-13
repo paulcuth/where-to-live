@@ -180,10 +180,22 @@ dt {
   margin-top: 10px;
 }
 
+.house-results {
+  color: #ffe40d !important;
+}
+td {
+  color: #ffe40d !important;
+}
+
 #commute-template {
   margin-bottom: 30px;
 }
 
 .loading {
   color: #767676;
+}
+
+
+.container-fluid {
+  padding: 0px;
 }

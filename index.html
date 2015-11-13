@@ -38,26 +38,47 @@
     <script id="housing-template" type="text/x-handlebars-template">
            <h4 class="criteria-label "><span><img src="img/icon-key.svg" class="icon icon-main"></span> Property</h4>
            <div id="record">
-             <table>
-               <tr>
-                 <td>Dwelling</td>
-                 <td>1 bed</td>
-                 <td>2 beds</td>
-                 <td>3 beds</td>
-                 <td>4 beds</td>
-                 <td>5 beds</td>
-               </tr>
+     
+               <div class="col-xs-2 text-center"> <img class="icon" src="img/icon-help.svg"><dt>Dwelling</dt></div>
+                 <div class="col-xs-2 text-center">
+                         <img class="icon" src="img/icon-house-1.svg">
+                         <dt>1 bed</dt>
+                  </div>
+                  <div class="col-xs-2 text-center">
+                          <img class="icon" src="img/icon-house-2.svg">
+                          <dt>2 bed house</dt>
+                  </div>
+                <div class="col-xs-2 text-center">
+                        <img class="icon" src="img/icon-house-3.svg">
+                        <dt>3 bed</dt>
+                 </div>
+                 <div class="col-xs-2 text-center">
+                         <img class="icon" src="img/icon-house-4.svg">
+                         <dt>4 bed </dt>
+                 </div>
+                 <div class="col-xs-2 text-center">
+                         <img class="icon" src="img/icon-house-5.svg">
+                         <dt>5 bed</dt>
+                  </div>
+
+         
+
                  {{#each record}}
-                 <tr>
-                   <td>{{dwelling_type}}</td>
-                   <td>{{one_bed}}</td>
-                   <td>{{two_beds}}</td>
-                   <td>{{three_beds}}</td>
-                   <td>{{four_beds}}</td>
-                   <td>{{five_beds}}</td>
-                 </tr>
+                 <div class="container-fluid house-results">
+                 <div class="col-xs-2 text-center"><td>{{dwelling_type}}</td></div>
+                 <div class="col-xs-2 text-center"><td>{{one_bed}}</td></div>
+                 <div class="col-xs-2 text-center"><td>{{two_beds}}</td></div>
+                 <div class="col-xs-2 text-center"><td>{{three_beds}}</td></div>
+                 <div class="col-xs-2 text-center"><td>{{four_beds}}</td></div>
+                 <div class="col-xs-2 text-center"><td>{{five_beds}}</td></div>
+                 </div>
+         
+
+                   
+                   
+                   
+                   
                  {{/each}}
-               </table>
            </div>
     </script>
 
