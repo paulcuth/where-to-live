@@ -3,51 +3,82 @@
     <link rel="stylesheet" href="https://import.io/style-guide/latest/main.css" />
     <link rel="stylesheet" href="./styles/main.css" />
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+
     <title>Where to Live</title>
 
     <script id="commute-template" type="text/x-handlebars-template">
-        <h2>Commute</h2>
+    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+        <div class="panel-body">
+           <h4 class="criteria-label "><span><img src="img/icon-train.svg" class="icon icon-main"></span> Commute</h4>
         <dl>
-          <dt>Nearest train station:</dt>
-          <dd>{{station}}</dd>
+        <div class="col-xs-4 text-center">
+        <img class="icon" src="img/icon-walk.svg">
+        <dt>Nearest train station:</dt>
+        <dd>{{station}}</dd>
+        </div>
           
+          <div class="col-xs-4 text-center">
+          <img class="icon" src="img/icon-time.svg">
           <dt>Time to work:</dt>
           <dd>{{time}}</dd>
+        </div>
 
+
+          <div class="col-xs-4 text-center">
+          <img class="icon" src="img/icon-ticket.svg">
           <dt>Annual cost:</dt>
           <dd>{{cost}}</dd>
+        </div>
+        </div>
+        </div>
+
         </dl>
     </script>
 
     <script id="housing-template" type="text/x-handlebars-template">
-        <h2>Housing</h2>
+           <h4 class="criteria-label "><span><img src="img/icon-key.svg" class="icon icon-main"></span> Property</h4>
         <p>Housing goes here</p>
     </script>
 
     <script id="schools-template" type="text/x-handlebars-template">
-        <h2>Schools</h2>
+           <h4 class="criteria-label "><span><img src="img/icon-school.svg" class="icon icon-main"></span> Schools</h4>
         <p>Schools go here</p>
     </script>
 
     <script id="pubs-template" type="text/x-handlebars-template">
-        <h2>Pubs</h2>
+           <h4 class="criteria-label "><span><img src="img/icon-pub.svg" class="icon icon-main"></span> Pubs in area</h4>
         <p>Pubs go here</p>
     </script>
 
 
+
+
+
+
   </head>
 
-  <body>
-    <section id="map">
-    </section>
-
-    <section id="content" class="form io-gradient-navy-pink well">
-      <h1 id="location-name">Where to live?</h1>
+  <body class="container-fluid">
+  <div class="col-sm-6 io-gradient-help-black height-100" id="sidebar">
+    <section id="content">
+    <img class="img-responsive text-center center " src="img/homefinder.svg"></img>
+      <h1 id="location-name" class="text-center">Choose a location from the map</h1>
       <section id="commute"></section>
       <section id="housing"></section>
       <section id="schools"></section>
       <section id="pubs"></section>
     </section>
+  </div>
+
+</div>
+<div class="col-sm-6 height-100">
+      <section id="map" >
+    </section>
+</div>
+
+
+
 
     <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.4/handlebars.min.js"></script>
