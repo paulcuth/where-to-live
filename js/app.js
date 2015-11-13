@@ -123,8 +123,10 @@ console.log(data);
       return getJSON(railStationFinder);
 
     }).then(function(data) {
-      var stationName = data.results[0].station.replace(' ', '-');
-      var trainTimeFinder = 'https://api.import.io/store/data/' + API_GUID_TRAIN_TIME_FINDER + '/_query?input/webpage/url=https://www.thetrainline.com/train-times/' + stationName.replace(' ', '-') + '-to-london-liverpool-street/13-nov-2015/1000&_apikey=' + API_KEY;
+      var station = data.results[0].station;
+      location.commute.station = station;
+      render();
+      var trainTimeFinder = 'https://api.import.io/store/data/' + API_GUID_TRAIN_TIME_FINDER + '/_query?input/webpage/url=https://www.thetrainline.com/train-times/' + station.replace(' ', '-') + '-to-london-liverpool-street/13-nov-2015/1000&_apikey=' + API_KEY;
       return getJSON(trainTimeFinder);
 
     }).then(function(data) {
