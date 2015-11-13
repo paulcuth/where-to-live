@@ -101,8 +101,7 @@ void function () {
     getPostcode(e.latlng.lat, e.latlng.lng).then(function (postcode) {
       location.name = postcode;
 
-      getCommuteTime(postcode);
-      getCommuteCost();
+      getCommuteInfo(postcode);
 
       render();
     });
@@ -112,30 +111,29 @@ void function () {
 
 
 
-  function getCommuteTime(postcode) {
+  function getCommuteInfo(postcode) {
     location.commute.time = 'Searching...';
     location.commute.station = 'Searching...';
+    location.commute.cost = 'Searching...';
 
     var API_GUID_PROPERTY_SEARCH = '6093274c-6b22-4dc4-89bc-c3af3b1eaf62';
-    var API_GUID_TRAIN_TIME_FINDER = '8e7df55d-a278-4e96-a83e-1e87f245ba82';
     var API_GUID_RAIL_STATION_FINDER = 'aa832bae-d298-4943-844d-10cb71bc2a64';
+    var API_GUID_TRAIN_TIME_FINDER = '8e7df55d-a278-4e96-a83e-1e87f245ba82';
+    var API_GUID_TICKET_PRICES_FINDER = '5bb3976c-7b53-4f38-a0c7-b76f7a88d47c';
     var traintime = '800'; // 8am
     var traindate = '13-nov-2015' // day of the datathlon!
         
     var propSearchApi = 'https://api.import.io/store/data/' + API_GUID_PROPERTY_SEARCH + '/_query?input/webpage/url=http://www.zoopla.co.uk/for-sale/property/' + postcode + '&_apikey=' + API_KEY;
     
     getJSON(propSearchApi).then(function(data) {
-console.log(data);
-
       var propertyUrl = data.results[0].property_link;
       var railStationFinder = 'https://api.import.io/store/data/' + API_GUID_RAIL_STATION_FINDER + '/_query?input/webpage/url=' + propertyUrl + '&_apikey=' + API_KEY;      
       return getJSON(railStationFinder);
 
     }).then(function(data) {
-      var station = data.results[0].station;
-      location.commute.station = station;
+      location.commute.station = data.results[0].station;
       render();
-      var trainTimeFinder = 'https://api.import.io/store/data/' + API_GUID_TRAIN_TIME_FINDER + '/_query?input/webpage/url=https://www.thetrainline.com/train-times/' + station.replace(' ', '-') + '-to-london-liverpool-street/' + traindate + '/' + traintime + '&_apikey=' + API_KEY;
+      var trainTimeFinder = 'https://api.import.io/store/data/' + API_GUID_TRAIN_TIME_FINDER + '/_query?input/webpage/url=https://www.thetrainline.com/train-times/' + location.commute.station.replace(' ', '-') + '-to-london-liverpool-street/' + traindate + '/' + traintime + '&_apikey=' + API_KEY;
       return getJSON(trainTimeFinder);
 
     }).then(function(data) {
@@ -144,16 +142,26 @@ console.log(data);
         render();
       }
 
+    }).then(function(data) {
+      var ticketPricesFinder = 'https://api.import.io/store/data/' + API_GUID_TICKET_PRICES_FINDER + '/_query?input/webpage/url=http://tickets.northernrail.org/s/season-tickets/' + location.commute.station.replace(' ', '%20') + '/London%20Liverpool%20Street/adult/2015-11-14/0100,1200&_apikey=' + API_KEY;
+			return getJSON(ticketPricesFinder);
+			
+    }).then(function(data) {
+      location.commute.cost = getAnnualCost(data.results);
+      render();
+
     }).catch(function (e) {
       console.error(e);
       location.commute.time = 'Unknown';
       render();
     });
   }  
-
-
-  function getCommuteCost(postcode) {
-    location.commute.cost = 'N/A';
+  
+  
+  function getAnnualCost(prices) {
+  	for(var i = 0; i < prices.length; i++) {
+  		if(prices[i].length == '12 months') return prices[i]['cost/_source'];
+  	}
   }
 
 
