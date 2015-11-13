@@ -3,17 +3,21 @@ void function () {
 	var API_KEY = '5eec3a52201d4802af6fa487025b0669c3da9015c7cd9b971ef9f3cb8e6645c042a3ba852f4ef0e58bf30db5e6cc04fa9e27bb140a9955977279ae0cf92a9d7e34a9e75ce84a3cd19f184be381035f50';
   var ui;
   var templates;
-  var location = {
-    commute: {}
-  };
+  var location;
 
   function init () {
+  	initLocation();
     initTemplates();
     initUI();
     initMap();
     render();
   }
-
+  
+  function initLocation () {
+  	location = {
+    	commute: {}
+  	};
+  }
 
   function initTemplates () {
     templates = {
@@ -92,6 +96,8 @@ void function () {
 
 
   function handleMapClick (e) {
+  	initLocation();
+  	render();
     getPostcode(e.latlng.lat, e.latlng.lng).then(function (postcode) {
       location.name = postcode;
 
