@@ -1,8 +1,8 @@
-<html> 
+<html>
   <head>
     <link rel="stylesheet" href="https://import.io/style-guide/latest/main.css" />
     <link rel="stylesheet" href="./styles/main.css" />
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />    
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="js/bootstrap.js"></script>
 
@@ -18,7 +18,7 @@
         <dt>Nearest train station:</dt>
         <dd>{{{station}}}</dd>
         </div>
-          
+
           <div class="col-xs-4 text-center">
           <img class="icon" src="img/icon-time.svg">
           <dt>Time to work:</dt>
@@ -39,7 +39,28 @@
 
     <script id="housing-template" type="text/x-handlebars-template">
            <h4 class="criteria-label "><span><img src="img/icon-key.svg" class="icon icon-main"></span> Property</h4>
-        <p>Housing goes here</p>
+           <div id="record">
+             <table>
+               <tr>
+                 <td>Dwelling</td>
+                 <td>1 bed</td>
+                 <td>2 beds</td>
+                 <td>3 beds</td>
+                 <td>4 beds</td>
+                 <td>5 beds</td>
+               </tr>
+                 {{#each record}}
+                 <tr>
+                   <td>{{dwelling_type}}</td>
+                   <td>{{one_bed}}</td>
+                   <td>{{two_beds}}</td>
+                   <td>{{three_beds}}</td>
+                   <td>{{four_beds}}</td>
+                   <td>{{five_beds}}</td>
+                 </tr>
+                 {{/each}}
+               </table>
+           </div>
     </script>
 
     <script id="schools-template" type="text/x-handlebars-template">
