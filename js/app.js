@@ -2,7 +2,9 @@
 void function () {
   var ui;
   var templates;
-  var location = {};
+  var location = {
+    commute: {}
+  };
 
   function init () {
     initTemplates();
@@ -65,18 +67,22 @@ void function () {
   }
 
 
+  function getJSON (url) {
+    return window.fetch(url, {
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+          'Accept': 'text/json'
+      }
+    }).then(function (res) {
+      return res.json();
+    });
+  }
+
   function getPostcode (lat, lng) {
     var url='http://postcodes.io/postcodes?lat=' + lat + '&lon=' + lng;
 
-    return window.fetch(url, {
-        method: 'GET',
-        mode: 'cors',
-        headers: {
-            'Accept': 'text/json'
-        }
-    }).then(function (res) {
-      return res.json();
-    }).then(function (json) {
+    return getJSON(url).then(function (json) {
       if (json.result && json.result[0]) {
         return json.result[0].postcode;
       }
@@ -87,14 +93,60 @@ void function () {
   function handleMapClick (e) {
     getPostcode(e.latlng.lat, e.latlng.lng).then(function (postcode) {
       location.name = postcode;
+
+      getCommuteTime();
+      getCommuteCost();
+
       render();
     });
   }
 
 
 
+
+
+  function getCommuteTime(homePostcode) {
+    location.commute.time = 'Searching...';
+
+    var API_GUID_PROPERTY_SEARCH = '6093274c-6b22-4dc4-89bc-c3af3b1eaf62';
+    var API_GUID_TRAIN_TIME_FINDER = '8e7df55d-a278-4e96-a83e-1e87f245ba82';
+    var API_GUID_RAIL_STATION_FINDER = 'aa832bae-d298-4943-844d-10cb71bc2a64';
+    var API_KEY = '5eec3a52201d4802af6fa487025b0669c3da9015c7cd9b971ef9f3cb8e6645c042a3ba852f4ef0e58bf30db5e6cc04fa9e27bb140a9955977279ae0cf92a9d7e34a9e75ce84a3cd19f184be381035f50';
+        
+    var propSearchApi = 'https://api.import.io/store/data/' + API_GUID_PROPERTY_SEARCH + '/_query?input/webpage/url=http://www.zoopla.co.uk/for-sale/property/' + homePostcode + '&_apikey=' + API_KEY;
+    
+    getJSON(propSearchApi).then(function(data) {
+console.log(data);
+
+      var propertyUrl = data.results[0].property_link;
+      var railStationFinder = 'https://api.import.io/store/data/' + API_GUID_RAIL_STATION_FINDER + '/_query?input/webpage/url=' + propertyUrl + '&_apikey=' + API_KEY;      
+      return getJSON(railStationFinder);
+
+    }).then(function(data) {
+      var stationName = data.results[0].station.replace(' ', '-');
+      var trainTimeFinder = 'https://api.import.io/store/data/' + API_GUID_TRAIN_TIME_FINDER + '/_query?input/webpage/url=https://www.thetrainline.com/train-times/' + stationName + '-to-london-liverpool-street/13-nov-2015/1000&_apikey=' + API_KEY;
+      return getJSON(trainTimeFinder);
+
+    }).then(function(data) {
+      if (data.results && data.results[0]) {
+        location.commute.time = data.results[0].duration;
+        render();
+      }
+
+    }).catch(function (e) {
+      console.error(e);
+      location.commute.time = 'Unknown';
+      render();
+    });
+  }  
+
+
+  function getCommuteCost(postcode) {
+    location.commute.cost = 'N/A';
+  }
+
+
+
+
   window.addEventListener('load', init);
-
-
-
-}()
+}();
