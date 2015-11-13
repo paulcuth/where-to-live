@@ -15,7 +15,8 @@ void function () {
   
   function initLocation () {
   	location = {
-    	commute: {}
+    	commute: {},
+    	pubs: {}
   	};
   }
 
@@ -102,6 +103,7 @@ void function () {
       location.name = postcode;
 
       getCommuteInfo(postcode);
+      getPubInfo(postcode);
 
       render();
     });
@@ -164,7 +166,22 @@ void function () {
   	}
   }
 
+  function getPubInfo(postcode) {
+    location.pubs.name = '<span class="loading">Searching...</span>';
+    location.pubs.rating = '<span class="loading">Searching...</span>';
 
+    var API_GUID_PUB_SEARCH = '90845a10-7b0a-4f25-8da4-c9b3b93aeae4';
+    
+    var pubSearchApi = 'https://api.import.io/store/data/' + API_GUID_PUB_SEARCH + '/_query?input/webpage/url=http://www.beerintheevening.com/pubs/results.shtml?l=' + postcode + '&_apikey=' + API_KEY;
+    
+    getJSON(pubSearchApi).then(function(data) {
+      if (data.results && data.results[0]) {
+				location.pubs.name = data.results[0]['name/_text'];
+				location.pubs.rating = data.results[0].rating;
+			}
+			render();
+    });
+  }
 
 
   window.addEventListener('load', init);
